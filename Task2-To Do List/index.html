@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TASK 2-To-Do List App</title>
+  <style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.todowrap {
+  background: linear-gradient(45deg, #ccd9ff, #ffccff,#ffe6f0, #C4C5F6);
+  background-size: 400% 400%;
+  animation: gradientAnimation 10s ease infinite;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  padding: 5%;
+}
+
+@keyframes gradientAnimation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.todo-container {
+  background-color: #fff;
+  max-width: 600px;
+  width: 100%;
+  padding: 30px;
+}
+.timestamp-btn {
+  background-color: #21f37e;
+  color: #000000;
+  border: none;
+  border-radius: 20%;
+  padding: 8px;
+  font-size: 14px;
+  cursor: default;
+}
+
+.add-task-wrap {
+  padding: 16px;
+  text-align: center;
+  opacity: 1;
+  background-color: #2196f3;
+  color: #344767;
+  box-shadow: #00000024 0rem 0.25rem 1.25rem 0rem,
+    #00bbd466 0rem 0.4375rem 0.625rem -0.3125rem;
+}
+
+.list-input-box {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.input-filed {
+  border: 0;
+  height: 30px;
+  margin: 0px;
+  width: 70%;
+  color: #495057;
+  padding: 20px;
+  font-size: 20px;
+  outline: none;
+}
+
+.btn-sub {
+  width: 120px;
+  height: 40px;
+  padding: 0 3px;
+  background-color: #fff;
+  border: none;
+  letter-spacing: 0;
+  color: #2196f3;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.todo-task-list {
+  margin-top: 30px;
+}
+
+.heading-tasklist {
+  font-size: 28px;
+  color: #2196f3;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.timestamp {
+  font-size: 16px;
+  color: #777;
+}
+
+</style>
+</head>
+<body>
+  <section class="todowrap">
+    <div class="todo-container">
+      <div class="add-task-wrap">
+        <form action="" id="add-task-form">
+          <div class="list-input-box">
+            <input type="text" class="input-filed" placeholder="Add new task" id="add-task-input">
+            <button class="btn-sub" type="submit" id="add-task-submit">Add Task</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="todo-container todo-task-list">
+      <h1 class="heading-tasklist">Tasks List</h1>
+      <div id="todo-tasks">
+        <!-- <div class="list-input-box">
+          <input type="text" class="input-filed" placeholder="Add new task" readonly>
+          <button class="btn-sub">edit</button>
+          <button class="btn-sub">delete</button>
+        </div> -->
+      </div>
+  </section>
+
+  <script>
+    window.addEventListener("load", () => {
+      const form = document.getElementById("add-task-form");
+      const addtask = document.getElementById("add-task-input");
+      const todotask_el = document.getElementById("todo-tasks");
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const taskvalue = addtask.value;
+        if (!taskvalue) {
+          alert("please fill out the task");
+        } else {
+          todotask_el.classList.add("add-task-wrap");
+          const list_input_box_el = document.createElement("div");
+          list_input_box_el.classList.add("list-input-box");
+          const input_filed_element = document.createElement("input");
+          input_filed_element.type = "text";
+          input_filed_element.classList.add("input-filed");
+          input_filed_element.setAttribute("readonly", "readonly");
+          input_filed_element.value = taskvalue;
+          const edit_el = document.createElement("button");
+          edit_el.classList.add("btn-sub");
+          edit_el.innerHTML = "✎";
+          const delete_el = document.createElement("button");
+          delete_el.classList.add("btn-sub");
+          delete_el.innerHTML = "🗑️";
+    const timestamp_el = document.createElement("span");
+    timestamp_el.classList.add("timestamp-btn");
+    timestamp_el.textContent = getCurrentTimestamp();
+
+
+          list_input_box_el.appendChild(input_filed_element);
+          list_input_box_el.appendChild(edit_el);
+          list_input_box_el.appendChild(delete_el);
+
+    list_input_box_el.appendChild(timestamp_el);
+          todotask_el.appendChild(list_input_box_el);
+
+          addtask.value = "";
+
+          edit_el.addEventListener("click", () => {
+            if (edit_el.innerHTML == "✎") {
+              edit_el.innerHTML = "save";
+              input_filed_element.removeAttribute("readonly");
+              input_filed_element.focus();
+            } else {
+              input_filed_element.setAttribute("readonly", "readonly");
+              edit_el.innerHTML = "✎";
+            }
+          });
+
+          delete_el.addEventListener("click", () => {
+            const confirmation = confirm("Are you sure you want to delete this task?");
+            if (confirmation) {
+              todotask_el.removeChild(list_input_box_el);
+            }
+          });
+        }
+      });
+function getCurrentTimestamp() {
+    const now = new Date();
+    const date = now.toLocaleDateString();
+    const time = now.toLocaleTimeString();
+    return `${date} ${time}`;
+  }
+});
+  </script>
+</body>
+</html>
